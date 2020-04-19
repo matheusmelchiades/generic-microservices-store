@@ -14,6 +14,23 @@ module.exports = [
         }
     },
     {
+        'path': '/products/stores/{store}',
+        'method': 'GET',
+        'handler': handler.getProducts,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'query': joi.object({
+                    'page': joi.number().integer().optional(),
+                    'limit': joi.number().integer().optional()
+                }),
+                'params': joi.object({
+                    'store': joi.string().regex(/^[0-9a-fA-F]{24}$/)
+                })
+            }
+        }
+    },
+    {
         'path': '/products',
         'method': 'POST',
         'handler': handler.createProduct,

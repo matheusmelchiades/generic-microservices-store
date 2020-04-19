@@ -8,3 +8,12 @@ module.exports.createProduct = async product => {
 
     return productDb;
 };
+
+module.exports.getProducts = async ({ store, pagination }) => {
+
+    const products = await dao.getProductsByStore({ store, pagination });
+
+    if (products.count && products.rows) return products;
+
+    return {};
+};

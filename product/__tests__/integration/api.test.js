@@ -45,7 +45,7 @@ describe('Api', () => {
         expect(response.result).toHaveProperty('_id');
     });
 
-    it('It should report message erro if param on payload is invalid', async () => {
+    it('It should report message if param on create product is invalid', async () => {
         const product = factory.build({ 'sold': undefined });
         const fields = Object.keys(product);
 
@@ -67,7 +67,26 @@ describe('Api', () => {
         });
 
         results.forEach(([result, field]) => {
+            expect(result.statusCode).toBe(400);
             expect(result.message).toBe(`"${field}" is required`);
         });
+    });
+
+    it('It should return all products by store', async () => {
+        const pagination = { 'total': 23, 'limitPerPage': 10, 'currentPage': 1 };
+        const storeId = factory.db.ObjectId();
+
+        await factory.createMany(pagination.total, { 'store': storeId });
+
+        const response = await server.inject({
+            'method': 'GET',
+            'url': `/products/stores/${storeId}?` +
+                `page=${pagination.currentPage}&limit=${pagination.limitPerPage}`
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('count', pagination.total);
+        expect(response.result).toHaveProperty('rows');
+        expect(response.result.rows.length).toBe(pagination.limitPerPage);
     });
 });

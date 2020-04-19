@@ -73,6 +73,7 @@ Factory.prototype.createMany = async function(length = 1, assign = {}) {
 
         return dataMock;
     } catch (err) {
+        console.log(err);
 
         return [];
     }

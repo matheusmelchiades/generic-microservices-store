@@ -16,3 +16,22 @@ module.exports.createProduct = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.getProducts = async (request, h) => {
+
+    try {
+        const { store } = request.params;
+        const { page = 1, limit = 5 } = request.query;
+
+        const response = await model.getProducts({
+            store,
+            'pagination': { 'page': page, limit }
+        });
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        return boom.internal();
+    }
+};
