@@ -1,6 +1,7 @@
 /** @type {import('../../engine/dao/handlers/Mongo')} */
 const db = global.databases[process.env.MONGO_GLOBAL_NAME];
 
+const queries = require('./queries');
 const collection = 'products';
 
 module.exports.insertProduct = payload => {
@@ -8,9 +9,10 @@ module.exports.insertProduct = payload => {
     return db.insertOne(collection, payload);
 };
 
-module.exports.getProductsByStore = ({ store, pagination }) => {
+module.exports.getProductsByStore = ({ store, filter, pagination }) => {
     const query = {
-        'store': store
+        'store': store,
+        ...queries.buildFilter(filter)
     };
 
     return db.findPagination(collection, query, {}, pagination);

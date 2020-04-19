@@ -21,10 +21,11 @@ module.exports.getProducts = async (request, h) => {
 
     try {
         const { store } = request.params;
-        const { page = 1, limit = 5 } = request.query;
+        const { page = 1, limit = 5, filter } = request.query;
 
         const response = await model.getProducts({
             store,
+            filter,
             'pagination': { 'page': page, limit }
         });
 

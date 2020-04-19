@@ -22,7 +22,8 @@ module.exports = [
             'validate': {
                 'query': joi.object({
                     'page': joi.number().integer().optional(),
-                    'limit': joi.number().integer().optional()
+                    'limit': joi.number().integer().optional(),
+                    'filter': joi.string().valid('available').optional()
                 }),
                 'params': joi.object({
                     'store': joi.string().regex(/^[0-9a-fA-F]{24}$/)

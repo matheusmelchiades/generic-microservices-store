@@ -9,13 +9,10 @@ module.exports.createProduct = async product => {
     return productDb;
 };
 
-module.exports.getProducts = async ({ store, pagination }) => {
+module.exports.getProducts = async ({ store, filter, pagination }) => {
+    const products = await dao.getProductsByStore({ store, filter, pagination });
 
-    const products = await dao.getProductsByStore({ store, pagination });
-
-    if (products.count && products.rows) return products;
-
-    return {};
+    return products;
 };
 
 module.exports.updateProduct = async (product, payload) => {

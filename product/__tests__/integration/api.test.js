@@ -132,4 +132,28 @@ describe('Api', () => {
         expect(response.statusCode).toBe(200);
         expect(response.result.message).toBe('Error to delete product');
     });
+
+    it('It should return all products available', async () => {
+        const storeId = factory.db.ObjectId();
+        const pagination = { 'limit': 5 };
+        const products = await factory.createMany(5, {
+            'store': storeId,
+            'quantity': 3,
+            'sold': 3
+        });
+
+        const response = await server.inject({
+            'url': `/products/stores/${storeId}?limit=${pagination.limit}&filter=available`,
+            'method': 'GET'
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('count', products.length);
+        expect(response.result).toHaveProperty('rows');
+        expect(response.result.rows.length).toBe(pagination.limit);
+
+        response.result.rows.forEach(product => {
+            expect(product.quantity).toEqual(product.sold);
+        });
+    });
 });
