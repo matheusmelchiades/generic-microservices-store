@@ -5,7 +5,7 @@
   "author": "matheusmelchiades <matheusmacielmelchiades@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit",
     "start": "node server.js",
     "dev": "NODE_ENV=development nodemon --inspect=localhost:9229 server.js",
     "lint": "yarn run eslint . --fix **.js"
@@ -18,7 +18,9 @@
     "@types/jest": "^25.2.1",
     "eslint": "^6.7.2",
     "eslint-plugin-jest": "^23.8.2",
+    "faker": "^4.1.0",
     "jest": "^25.3.0",
+    "mongodb-memory-server": "^6.5.2",
     "nodemon": "^2.0.2"
   },
   "dependencies": {

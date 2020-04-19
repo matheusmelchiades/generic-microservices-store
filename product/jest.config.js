@@ -27,7 +27,7 @@ module.exports = {
     // 'collectCoverage': true,
 
     // The directory where Jest should output its coverage files
-    'collectCoverageFrom': ['./app/api/components/**'],
+    'collectCoverageFrom': ['./app/api/**'],
 
     /*
      * An array of regexp pattern strings used to skip coverage collection
@@ -67,7 +67,7 @@ module.exports = {
      */
 
     // A path to a module which exports an async function that is triggered once before all test suites
-    'globalSetup': './__tests__/setup.js',
+    'globalSetup': `${__dirname}/__tests__/setup.js`,
 
 
     /*
@@ -205,13 +205,11 @@ module.exports = {
      */
 
     // The glob patterns Jest uses to detect test files
-    'testMatch': ['**/__tests__/**/*.test.js']
+    'testMatch': [`${__dirname}/__tests__/**/*.test.js`]
 
     /*
      * An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-     * testPathIgnorePatterns: [
-     *   '/node_modules/'
-     * ],
+     * 'testPathIgnorePatterns': ['/node_modules/']
      */
 
     /*
