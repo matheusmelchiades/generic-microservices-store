@@ -22,3 +22,11 @@ module.exports.updateProduct = ({ id, payload }) => {
 
     return db.updateOne(collection, query, update, { 'upsert': true });
 };
+
+module.exports.deleteProduct = async id => {
+    const query = { '_id': db.ObjectId(id) };
+
+    const { deletedCount } = await db.deleteOne(collection, query);
+
+    return Boolean(deletedCount);
+};

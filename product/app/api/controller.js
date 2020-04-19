@@ -51,3 +51,18 @@ module.exports.updateProduct = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.deleteProduct = async (request, h) => {
+
+    try {
+        const { product } = request.params;
+
+        const response = await model.deleteProduct(product);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        return boom.internal();
+    }
+};

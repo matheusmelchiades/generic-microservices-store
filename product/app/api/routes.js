@@ -75,5 +75,18 @@ module.exports = [
                 })
             }
         }
+    },
+    {
+        'path': '/products/{product}',
+        'method': 'DELETE',
+        'handler': handler.deleteProduct,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'params': joi.object({
+                    'product': joi.string().regex(/^[0-9a-fA-F]{24}$/)
+                })
+            }
+        }
     }
 ];

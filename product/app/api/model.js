@@ -26,3 +26,12 @@ module.exports.updateProduct = async (product, payload) => {
 
     return {};
 };
+
+module.exports.deleteProduct = async product => {
+
+    const productDeleted = await dao.deleteProduct(product);
+
+    if (!productDeleted) return { 'message': 'Error to delete product' };
+
+    return { 'message': 'Removed with success' };
+};

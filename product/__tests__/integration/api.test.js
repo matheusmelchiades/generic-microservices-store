@@ -91,7 +91,7 @@ describe('Api', () => {
     });
 
     it('It should update product with success', async () => {
-        const product = await factory.create({ 'sold': undefined });
+        const product = await factory.create();
 
         const dataToUpdate = {
             'description': 'Camiseta Top',
@@ -107,5 +107,29 @@ describe('Api', () => {
         expect(response.statusCode).toBe(200);
         expect(response.result).toHaveProperty('description', dataToUpdate.description);
         expect(response.result).toHaveProperty('price', dataToUpdate.price);
+    });
+
+    it('It should remove product with success', async () => {
+        const product = await factory.create();
+
+        const response = await server.inject({
+            'method': 'DELETE',
+            'url': `/products/${product._id}`
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result.message).toBe('Removed with success');
+    });
+
+    it('It should report error if not exists product on delete product', async () => {
+        const idFake = factory.db.ObjectId();
+
+        const response = await server.inject({
+            'method': 'DELETE',
+            'url': `/products/${idFake}`
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result.message).toBe('Error to delete product');
     });
 });

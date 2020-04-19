@@ -50,6 +50,18 @@ Mongo.prototype.close = function() {
     });
 };
 
+Mongo.prototype.deleteOne = function(collection, query) {
+
+    return new Promise((resolve, reject) => {
+
+        this.db.collection(collection).deleteOne(query, (err, success) => {
+            if (err) return reject(err);
+
+            return resolve(success);
+        });
+    });
+};
+
 Mongo.prototype.dropAll = function(collection) {
 
     return new Promise((resolve, reject) => {
