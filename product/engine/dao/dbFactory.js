@@ -45,9 +45,10 @@ function loadConnections() {
                     return resolve({ name, connection });
                 });
 
-            }
+            } else {
 
-            return resolve({});
+                return resolve({});
+            }
         });
     });
 }
