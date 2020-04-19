@@ -1,0 +1,10 @@
+{
+    "MongoImport": {
+        "prefix": "imongo",
+        "description": "Snipper to import mongo and type def",
+        "body": [
+            "/** @type {import('../../../../engine/dao/handlers/Mongo.js')} */\n",
+            "const db = global.databases[process.env.MONGO_GLOBAL_NAME];\n\n"
+        ]
+    }
+}

@@ -1,0 +1,90 @@
+version: "3"
+services:
+  #API GATEWAY
+  api:
+    container_name: api
+    build: ./api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - product
+
+  # PRODUCT SERVICE
+  product:
+    container_name: product
+    build: ./product
+    ports:
+      - "5001:5000"
+    depends_on:
+      - product_db
+
+  # PRODUCT SERVICE
+  product_db:
+    image: mongo
+    restart: always
+    container_name: product_db
+    env_file: ./product/.env
+    ports:
+      - "36015:27017"
+    volumes:
+      - ./scripts/init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
+    logging:
+      driver: none
+
+  # STORE SERVICE
+  store:
+    container_name: store
+    build: ./store
+    ports:
+      - "5002:5000"
+    depends_on:
+      - store_db
+
+  store_db:
+    image: mongo
+    restart: always
+    container_name: store_db
+    env_file: ./store/.env
+    ports:
+      - "36016:27017"
+    volumes:
+      - ./scripts/init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
+    logging:
+      driver: none
+
+  # USER SERVICE
+  user:
+    container_name: user
+    build: ./user
+    ports:
+      - "5003:5000"
+    depends_on:
+      - user_db
+
+  user_db:
+    image: mongo
+    restart: always
+    container_name: user_db
+    env_file: ./user/.env
+    ports:
+      - "36017:27017"
+    volumes:
+      - ./scripts/init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
+    logging:
+      driver: none
+
+  # # PROXY
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx:latest
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/conf.d/default.conf
+  #   logging:
+  #     driver: none
+  #   depends_on:
+  #     - api
+  #     - product
+  #     - store
+  #     - user
