@@ -50,30 +50,6 @@ Mongo.prototype.close = function() {
     });
 };
 
-Mongo.prototype.deleteOne = function(collection, query) {
-
-    return new Promise((resolve, reject) => {
-
-        this.db.collection(collection).deleteOne(query, (err, success) => {
-            if (err) return reject(err);
-
-            return resolve(success);
-        });
-    });
-};
-
-Mongo.prototype.dropAll = function(collection) {
-
-    return new Promise((resolve, reject) => {
-
-        this.db.collection(collection).deleteMany((err, success) => {
-            if (err) return reject(err);
-
-            return resolve(success);
-        });
-    });
-};
-
 Mongo.prototype.find = function(collection, query, projection) {
 
     return new Promise((resolve, reject) => {
@@ -100,7 +76,7 @@ Mongo.prototype.findOne = function(collection, query = {}, projection = {}, opti
 
 Mongo.prototype.findPagination = function(collection, query, projection, options) {
     const orderBy = query.sort || {};
-    const currentPage = options.page - 1 > 0 ? options.page - 1 : 0;
+    const currentPage = options.page;
     const limit = parseInt(options.limit);
     const skip = parseInt(currentPage) * parseInt(limit);
 
@@ -144,18 +120,6 @@ Mongo.prototype.insertOne = function(collection, document) {
             if (err) return reject(err);
 
             return resolve(data.ops[0]);
-        });
-    });
-};
-
-Mongo.prototype.insertMany = function(collection, documents) {
-
-    return new Promise((resolve, reject) => {
-
-        this.db.collection(collection).insertMany(documents, (err, data) => {
-            if (err) return reject(err);
-
-            return resolve(data.ops);
         });
     });
 };
