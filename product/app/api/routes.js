@@ -51,5 +51,29 @@ module.exports = [
                 'failAction': (_, __, err) => err
             }
         }
+    },
+    {
+        'path': '/products/{product}',
+        'method': 'PUT',
+        'handler': handler.updateProduct,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'params': joi.object({
+                    'product': joi.string().regex(/^[0-9a-fA-F]{24}$/)
+                }),
+                'payload': joi.object({
+                    'store': joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
+                    'title': joi.string().optional(),
+                    'description': joi.string().optional(),
+                    'price': joi.number().optional(),
+                    'quantity': joi.number().integer().min(1).optional(),
+                    'pictures': joi.array().items(joi.object({
+                        'source': joi.string().uri().optional(),
+                        'order': joi.number().integer().optional()
+                    })).min(1).optional()
+                })
+            }
+        }
     }
 ];

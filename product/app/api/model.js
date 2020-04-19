@@ -17,3 +17,12 @@ module.exports.getProducts = async ({ store, pagination }) => {
 
     return {};
 };
+
+module.exports.updateProduct = async (product, payload) => {
+
+    const productDb = await dao.updateProduct({ 'id': product, payload });
+
+    if (productDb) return productDb;
+
+    return {};
+};

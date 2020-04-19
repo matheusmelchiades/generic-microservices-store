@@ -89,4 +89,23 @@ describe('Api', () => {
         expect(response.result).toHaveProperty('rows');
         expect(response.result.rows.length).toBe(pagination.limitPerPage);
     });
+
+    it('It should update product with success', async () => {
+        const product = await factory.create({ 'sold': undefined });
+
+        const dataToUpdate = {
+            'description': 'Camiseta Top',
+            'price': 29.90
+        };
+
+        const response = await server.inject({
+            'method': 'PUT',
+            'url': `/products/${product._id}`,
+            'payload': dataToUpdate
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('description', dataToUpdate.description);
+        expect(response.result).toHaveProperty('price', dataToUpdate.price);
+    });
 });

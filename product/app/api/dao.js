@@ -15,3 +15,10 @@ module.exports.getProductsByStore = ({ store, pagination }) => {
 
     return db.findPagination(collection, query, {}, pagination);
 };
+
+module.exports.updateProduct = ({ id, payload }) => {
+    const query = { '_id': db.ObjectId(id) };
+    const update = { '$set': payload };
+
+    return db.updateOne(collection, query, update, { 'upsert': true });
+};

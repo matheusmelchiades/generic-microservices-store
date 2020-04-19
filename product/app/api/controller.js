@@ -35,3 +35,19 @@ module.exports.getProducts = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.updateProduct = async (request, h) => {
+
+    try {
+        const { product } = request.params;
+        const { payload } = request;
+
+        const response = await model.updateProduct(product, payload);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        return boom.internal();
+    }
+};
