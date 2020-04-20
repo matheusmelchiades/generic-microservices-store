@@ -89,4 +89,50 @@ describe('Main', () => {
         expect(response.statusCode).toBe(200);
         expect(response.result).toHaveProperty('message', 'Add products with success');
     });
+
+    it('It should return success on remove product of catalog', async () => {
+        const product = factoryProduct.build();
+        const products = factoryProduct.buildMany(10);
+        const store = await factory.create({
+            '_id': factory.db.ObjectId(),
+            'catalog': {
+                '_id': factory.db.ObjectId(),
+                'status': 'pending',
+                'products': [...products, product]
+            }
+        });
+
+        const response = await server.inject({
+            'url': `/stores/${store._id}/products/${product._id}`,
+            'method': 'DELETE'
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('status', 'success');
+        expect(response.result).toHaveProperty('message', 'Removed with success');
+    });
+
+    it('It should report error if not remove product', async () => {
+        const product = factoryProduct.build();
+        const products = factoryProduct.buildMany(10);
+        const store = await factory.create({
+            '_id': factory.db.ObjectId(),
+            'catalog': {
+                '_id': factory.db.ObjectId(),
+                'status': 'pending',
+                'products': products
+            }
+        });
+
+        const response = await server.inject({
+            'url': `/stores/${store._id}/products/${product._id}`,
+            'method': 'DELETE'
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('status', 'error');
+        expect(response.result).toHaveProperty('message', 'Anyone product removed');
+    });
+
+
 });

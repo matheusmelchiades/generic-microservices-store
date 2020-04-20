@@ -32,3 +32,18 @@ module.exports.addProducts = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.removeProduct = async(request, h) => {
+
+    try {
+        const { store, product } = request.params;
+
+        const response = await model.removeProduct(store, product);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        return boom.internal();
+    }
+};

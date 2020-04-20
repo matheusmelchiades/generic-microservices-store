@@ -53,5 +53,19 @@ module.exports = [
                 'failAction': (_, __, err) => err
             }
         }
+    },
+    {
+        'path': '/stores/{store}/products/{product}',
+        'method': 'DELETE',
+        'handler': handler.removeProduct,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'params': joi.object({
+                    'store': joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+                    'product': joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+                })
+            }
+        }
     }
 ];

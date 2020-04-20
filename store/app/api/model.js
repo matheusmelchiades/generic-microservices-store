@@ -33,3 +33,21 @@ module.exports.addProducts = async (storeId, products) => {
 
     return {};
 };
+
+module.exports.removeProduct = async (store, product) => {
+    const storeDb = await dao.getStoreById(store);
+    const removed = await dao.removeProduct(store, product);
+
+    if (removed.catalog.products.length >= storeDb.catalog.products.length) {
+
+        return {
+            'status': 'error',
+            'message': 'Anyone product removed'
+        };
+    }
+
+    return {
+        'status': 'success',
+        'message': 'Removed with success'
+    };
+};
