@@ -39,15 +39,33 @@ Factory.prototype.destroy = async function() {
 };
 
 Factory.prototype.build = function(assign = {}) {
+    const builded = this.model.build(this.db.ObjectId);
+    const sample = {
+        ...builded,
+        ...assign
+    };
 
     if (assign && assign._id) {
         assign._id = this.db.ObjectId(assign._id);
     }
 
-    return JSON.parse(JSON.stringify({ ...this.model.build(this.db.ObjectId), ...assign }));
+    return Object.entries(sample).reduce((prev, [key, value]) => {
+
+        if (value) {
+            prev[key] = value;
+        }
+
+        return prev;
+    }, {});
+};
+
+Factory.prototype.buildMany = function(length = 0, assign = {}) {
+
+    return new Array(length).fill({}).map(() => this.build(assign));
 };
 
 Factory.prototype.create = async function(assign = {}) {
+
     try {
 
         const dataMock = {
