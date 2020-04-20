@@ -48,7 +48,7 @@ module.exports.removeProduct = (store, product) => {
     return db.updateOne(collection, query, update);
 };
 
-module.exports.getProducts = ({ store, pagination = { 'page': 1, 'limit': 5 } }) => {
+module.exports.getProducts = ({ store, pagination }) => {
     const currentPage = pagination.page - 1 > 0 ? pagination.page - 1 : 0;
     const limit = parseInt(pagination.limit);
     const skip = parseInt(currentPage) * parseInt(limit);
