@@ -51,3 +51,10 @@ module.exports.removeProduct = async (store, product) => {
         'message': 'Removed with success'
     };
 };
+
+module.exports.getProducts = async ({ store, pagination }) => {
+
+    const [catalog] = await dao.getProducts({ store, pagination });
+
+    return catalog || {};
+};

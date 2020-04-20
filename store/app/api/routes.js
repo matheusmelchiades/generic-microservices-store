@@ -67,5 +67,19 @@ module.exports = [
                 })
             }
         }
+    },
+    {
+        'path': '/stores/{store}/products',
+        'method': 'GET',
+        'handler': handler.getProducts,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'query': joi.object({
+                    'page': joi.number().optional(),
+                    'limit': joi.number().optional()
+                })
+            }
+        }
     }
 ];

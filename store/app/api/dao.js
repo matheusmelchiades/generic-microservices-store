@@ -47,3 +47,28 @@ module.exports.removeProduct = (store, product) => {
 
     return db.updateOne(collection, query, update);
 };
+
+module.exports.getProducts = ({ store, pagination = { 'page': 1, 'limit': 5 } }) => {
+    const currentPage = pagination.page - 1 > 0 ? pagination.page - 1 : 0;
+    const limit = parseInt(pagination.limit);
+    const skip = parseInt(currentPage) * parseInt(limit);
+
+    const pipeline = [
+        { '$match': { '_id': db.ObjectId(store) } },
+        {
+            '$project': {
+                'companyName': '$companyName',
+                'total': { '$size': '$catalog.products' },
+                'records': '$catalog.products'
+            }
+        },
+        {
+            '$addFields': {
+                'products': { '$slice': ['$records', skip, limit] }
+            }
+        },
+        { '$project': { '_id': 0, 'records': 0 } }
+    ];
+
+    return db.aggregate(collection, pipeline);
+};

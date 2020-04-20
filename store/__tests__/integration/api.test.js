@@ -134,5 +134,27 @@ describe('Main', () => {
         expect(response.result).toHaveProperty('message', 'Anyone product removed');
     });
 
+    it('It should return all products in catalog', async () => {
+        const pagination = { 'limit': 5 };
+        const products = factoryProduct.buildMany(10);
+        const store = await factory.create({
+            '_id': factory.db.ObjectId(),
+            'catalog': {
+                '_id': factory.db.ObjectId(),
+                'status': 'pending',
+                'products': products
+            }
+        });
 
+        const response = await server.inject({
+            'method': 'GET',
+            'url': `/stores/${store._id}/products`
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('companyName', store.companyName);
+        expect(response.result).toHaveProperty('total', products.length);
+        expect(response.result).toHaveProperty('products');
+        expect(response.result.products.length).toBe(pagination.limit);
+    });
 });
