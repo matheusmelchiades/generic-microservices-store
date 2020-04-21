@@ -7,3 +7,29 @@ module.exports.createUser = async user => {
 
     return factory.createUserResponse(userDb);
 };
+
+module.exports.createStore = async (userId, storeId) => {
+
+    const userDb = await dao.findUserById(userId);
+
+    if (userDb) {
+
+        if (userDb.stores) {
+            const hasStore = userDb.find(item => {
+                return storeId === item.store;
+            });
+
+            if (hasStore) {
+
+                return {
+                    'status': 'error',
+                    'message': 'You already created this store'
+                };
+            }
+        }
+
+        await dao.addStore(userId, { storeId, 'role': 'owner' });
+    }
+
+    return { 'status': 'success', 'message': 'Associate owner with success' };
+};

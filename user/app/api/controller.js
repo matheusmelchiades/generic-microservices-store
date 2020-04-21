@@ -16,3 +16,19 @@ module.exports.createUser = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.createStore = async (request, h) => {
+
+    try {
+        const { user, store } = request.params;
+
+        const response = await model.createStore(user, store);
+
+        return h.response(response);
+    } catch (err) {
+        console.log(err);
+        logger.error(err.message);
+
+        return boom.internal();
+    }
+};

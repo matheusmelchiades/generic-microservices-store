@@ -26,5 +26,19 @@ module.exports = [
                 })
             }
         }
+    },
+    {
+        'path': '/users/{user}/stores/{store}',
+        'method': 'POST',
+        'handler': handler.createStore,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'params': joi.object({
+                    'user': joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+                    'store': joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+                })
+            }
+        }
     }
 ];
