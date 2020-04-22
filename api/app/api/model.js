@@ -54,3 +54,9 @@ module.exports.createStore = async (user, payload) => {
 
     throw boom.badData('Error on create store');
 };
+
+module.exports.addProducts = async (store, products) => {
+    const response = await storeService.addProducts(store, products);
+
+    return response.data;
+};

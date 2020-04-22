@@ -15,3 +15,12 @@ module.exports.createStore = payload => {
         'data': payload
     });
 };
+
+module.exports.addProducts = (store, products) => {
+
+    return api({
+        'url': `/stores/${store}/products`,
+        'method': 'POST',
+        'data': { products }
+    });
+};

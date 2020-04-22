@@ -52,3 +52,20 @@ module.exports.createStore = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.addProducts = async (request, h) => {
+
+    try {
+        const { store, products } = request.payload;
+
+        const response = await model.addProducts(store, products);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        if (boom.isBoom(err)) return err;
+
+        return boom.internal();
+    }
+};

@@ -57,5 +57,19 @@ module.exports = [
                 'policies': ['isAuth']
             }
         }
+    },
+    {
+        'path': '/stores/products',
+        'method': 'POST',
+        'handler': handler.addProducts,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'payload': joi.object({
+                    'store': joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+                    'products': joi.array().required()
+                })
+            }
+        }
     }
 ];

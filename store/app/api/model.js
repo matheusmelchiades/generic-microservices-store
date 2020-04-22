@@ -37,7 +37,7 @@ module.exports.addProducts = async (storeId, products) => {
         return { 'message': 'Add products with success' };
     }
 
-    return {};
+    return { 'message': 'Anyone product add' };
 };
 
 module.exports.removeProduct = async (store, product) => {

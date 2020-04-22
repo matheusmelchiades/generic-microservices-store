@@ -4,6 +4,7 @@ const launcher = require('../../engine/launcher');
 const userService = require('../../app/services/user');
 const storeService = require('../../app/services/store');
 const helper = require('../helper');
+const mock = require('../mock');
 
 describe('Api', () => {
     let server;
@@ -188,6 +189,34 @@ describe('Api', () => {
 
         expect(response.statusCode).toBe(200);
         expect(response.result).toHaveProperty('message', 'Created store with success');
+    });
+
+    it('It should add a product to catalog', async () => {
+        const user = mock.user();
+        const store = mock.store();
+        const token = await helper.getToken(server, userMoxios, user);
+
+        storeMoxios.stubRequest(`/stores/${store._id}/products`, {
+            'status': 200,
+            'responseText': {
+                'message': 'Add products with success'
+            }
+        });
+
+        const response = await server.inject({
+            'url': '/stores/products',
+            'method': 'POST',
+            'headers': {
+                'authorization': token
+            },
+            'payload': {
+                'store': store._id,
+                'products': mock.products(5)
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('message', 'Add products with success');
     });
 });
 
