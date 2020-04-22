@@ -98,9 +98,9 @@ module.exports = [
         }
     },
     {
-        'path': '/products/stores/{store}/available',
+        'path': '/products/stores/{store}',
         'method': 'GET',
-        'handler': handler.getProductsAvailable,
+        'handler': handler.getProducts,
         'config': {
             'description': 'Get Default',
             'plugins': {

@@ -297,7 +297,7 @@ describe('Api', () => {
         expect(response.result).toHaveProperty('message', 'Error to delete product');
     });
 
-    it('It should return all products avaible', async () => {
+    it('It should return all products available', async () => {
         const user = mock.user();
         const store = mock.store();
         const products = mock.products(5, { store });
@@ -313,7 +313,36 @@ describe('Api', () => {
         });
 
         const response = await server.inject({
-            'url': `/products/stores/${store._id}/available?page=1&limit=5`,
+            'url': `/products/stores/${store._id}?page=1&limit=5&filter=available`,
+            'method': 'GET',
+            'headers': {
+                'authorization': token
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('count', 20);
+        expect(response.result).toHaveProperty('rows');
+        expect(response.result.rows.length).toBe(5);
+    });
+
+    it('It should return list of products', async () => {
+        const user = mock.user();
+        const store = mock.store();
+        const products = mock.products(5, { store });
+        const token = await helper.getToken(server, userMoxios, user);
+        const responseMock = {
+            'count': 20,
+            'rows': products.slice(0, 5)
+        };
+
+        productMoxios.stubRequest(`/products/stores/${store._id}?page=1&limit=5`, {
+            'status': 200,
+            'responseText': responseMock
+        });
+
+        const response = await server.inject({
+            'url': `/products/stores/${store._id}?page=1&limit=5`,
             'method': 'GET',
             'headers': {
                 'authorization': token
@@ -326,4 +355,3 @@ describe('Api', () => {
         expect(response.result.rows.length).toBe(5);
     });
 });
-

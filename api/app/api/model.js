@@ -76,10 +76,8 @@ module.exports.deleteProduct = async productId => {
     return response.data;
 };
 
-module.exports.getProductsAvailable = async (storeId, query) => {
-    const response = await productService.getProducts(storeId, {
-        ...query, 'filter': 'available'
-    });
+module.exports.getProducts = async (storeId, query) => {
+    const response = await productService.getProducts(storeId, query);
 
     return response.data;
 };
