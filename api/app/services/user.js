@@ -33,3 +33,10 @@ module.exports.createStore = (userID, storeId) => {
     });
 };
 
+module.exports.getRoles = userId => {
+
+    return api({
+        'url': `/users/${userId}/roles`,
+        'method': 'GET'
+    });
+};

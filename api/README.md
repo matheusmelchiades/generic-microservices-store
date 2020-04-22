@@ -1,4 +1,4 @@
-# template-server-hapi
+# Api gatway
 
 Hapi.js
 
@@ -51,15 +51,10 @@ npm start
 
 * [app](./app) - Tem com objetivo agrupar os serviços que compõe a aplicação.
   * [api](./app/api)
-    * [components](#component) - Tem como objetivo organizar de acordo com cada regra de negócio. (ex: users, posts)
-    * [services](./app/api/services) - Tem com objetivo centralizar serviços como socket, email e entre outros.
+    * [routes](./app/main/routes.js) - Tem como objetivo, na determinação de qual ação/método deve ser executado na aplicação, criando um acesso externo.
+    * [controller]() Responsavel por tratar e controlar funcionalidades entre o roteamento e modelagem da aplicação.
+    * [model](./examples/model.js) - Tem como responsabilidade na manipulação dos dados de entrada externa, aplicando a regra de negócio proposta e enviar ou não para o armazenamento do banco de dados, através da camada DAO.
+    * [dao](./examples/dao.js) - Tem como responsabilidade criar uma camada de abstração, para a persistência dos dados, assim, separando a regra de negócio das de acesso ao banco.
 * [config](./config.py) - Centralização de constantes, para a aplicação.
 * [engine](./engine/) - Responsável carregar dependencias, plugins, middlewares e funções para a inicialização do servidor
 * [server](./server.js) - Responsável por iniciar a aplicação.
-
-### Component
-
-* [routes](./app/main/routes.py) - Tem como objetivo, na determinação de qual ação/método deve ser executado na aplicação, criando um acesso externo.
-* [controller]() Responsavel por tratar e controlar funcionalidades entre o roteamento e modelagem da aplicação.
-* [model](./examples/model.py) - Tem como responsabilidade na manipulação dos dados de entrada externa, aplicando a regra de negócio proposta e enviar ou não para o armazenamento do banco de dados, através da camada DAO.
-* [dao](./examples/dao.py) - Tem como responsabilidade criar uma camada de abstração, para a persistência dos dados, assim, separando a regra de negócio das de acesso ao banco.

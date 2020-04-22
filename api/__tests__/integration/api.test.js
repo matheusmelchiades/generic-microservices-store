@@ -46,20 +46,26 @@ describe('Api', () => {
     });
 
     it('It should signup with success', async () => {
-        const user = { 'username': 'matheus', 'password': 'qwer1234' };
+        const user = mock.user();
 
         userMoxios.stubRequest('/users', {
             'status': 200,
             'responseText': {
                 'status': 'success',
-                'payload': user
+                'payload': {
+                    '_id': user._id,
+                    'username': user.username
+                }
             }
         });
 
         const response = await server.inject({
             'url': '/signup',
             'method': 'POST',
-            'payload': user
+            'payload': {
+                'username': user.username,
+                'password': 'qwer1234'
+            }
         });
 
         expect(response.statusCode).toBe(200);
@@ -200,6 +206,18 @@ describe('Api', () => {
         const store = mock.store();
         const token = await helper.getToken(server, userMoxios, user);
 
+
+        userMoxios.stubRequest(`/users/${user._id}/roles`, {
+            'status': 200,
+            'responseText': {
+                'status': 'success',
+                'message': 'User authenticate with success',
+                'payload': {
+                    [store._id]: 'owner'
+                }
+            }
+        });
+
         storeMoxios.stubRequest(`/stores/${store._id}/products`, {
             'status': 200,
             'responseText': {
@@ -226,7 +244,18 @@ describe('Api', () => {
     it('It should update a product with success', async () => {
         const user = mock.user();
         const product = mock.product();
+        const store = mock.store();
         const token = await helper.getToken(server, userMoxios, user);
+
+        userMoxios.stubRequest(`/users/${user._id}/roles`, {
+            'status': 200,
+            'responseText': {
+                'status': 'success',
+                'payload': {
+                    [store._id]: 'owner'
+                }
+            }
+        });
 
         productMoxios.stubRequest(`/products/${product._id}`, {
             'status': 200,
@@ -234,7 +263,7 @@ describe('Api', () => {
         });
 
         const response = await server.inject({
-            'url': `/products/${product._id}`,
+            'url': `/stores/${store._id}/products/${product._id}`,
             'method': 'PUT',
             'headers': {
                 'authorization': token
@@ -251,7 +280,19 @@ describe('Api', () => {
     it('It should delete a product with success', async () => {
         const user = mock.user();
         const product = mock.product();
+        const store = mock.store();
+
         const token = await helper.getToken(server, userMoxios, user);
+
+        userMoxios.stubRequest(`/users/${user._id}/roles`, {
+            'status': 200,
+            'responseText': {
+                'status': 'success',
+                'payload': {
+                    [store._id]: 'owner'
+                }
+            }
+        });
 
         productMoxios.stubRequest(`/products/${product._id}`, {
             'status': 200,
@@ -261,7 +302,7 @@ describe('Api', () => {
         });
 
         const response = await server.inject({
-            'url': `/products/${product._id}`,
+            'url': `/stores/${store._id}/products/${product._id}`,
             'method': 'DELETE',
             'headers': {
                 'authorization': token
@@ -276,6 +317,7 @@ describe('Api', () => {
     it('It should report error on delete a product', async () => {
         const user = mock.user();
         const product = mock.product();
+        const store = mock.store();
         const token = await helper.getToken(server, userMoxios, user);
 
         productMoxios.stubRequest(`/products/${product._id}`, {
@@ -285,8 +327,18 @@ describe('Api', () => {
             }
         });
 
+        userMoxios.stubRequest(`/users/${user._id}/roles`, {
+            'status': 200,
+            'responseText': {
+                'status': 'success',
+                'payload': {
+                    [store._id]: 'owner'
+                }
+            }
+        });
+
         const response = await server.inject({
-            'url': `/products/${product._id}`,
+            'url': `/stores/${store._id}/products/${product._id}`,
             'method': 'DELETE',
             'headers': {
                 'authorization': token

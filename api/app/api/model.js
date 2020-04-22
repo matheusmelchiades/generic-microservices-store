@@ -13,9 +13,10 @@ function handlesRequest(data) {
     }
 
     if (data.status === 'success') {
+        const { _id, username } = data.payload;
 
         return {
-            'token': crypto.encrypt(JSON.stringify(data.payload))
+            'token': crypto.encrypt(JSON.stringify({ _id, username }))
         };
     }
 

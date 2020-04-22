@@ -53,6 +53,7 @@ describe('Main', () => {
         expect(response.result.payload).toHaveProperty('_id');
         expect(response.result.payload).toHaveProperty('username', user.username);
         expect(response.result.payload).not.toHaveProperty('stores');
+        expect(response.result.payload).not.toHaveProperty('password');
     });
 
     it('It should report error if username already in use', async () => {

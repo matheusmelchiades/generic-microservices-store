@@ -71,29 +71,29 @@ module.exports = [
                 })
             },
             'plugins': {
-                'policies': ['isAuth']
+                'policies': ['isAuth', 'hasPermission']
             }
         }
     },
     {
-        'path': '/products/{producId}',
+        'path': '/stores/{store}/products/{producId}',
         'method': 'PUT',
         'handler': handler.updateProduct,
         'config': {
             'description': 'Get Default',
             'plugins': {
-                'policies': ['isAuth']
+                'policies': ['isAuth', 'hasPermission']
             }
         }
     },
     {
-        'path': '/products/{producId}',
+        'path': '/stores/{store}/products/{producId}',
         'method': 'DELETE',
         'handler': handler.deleteProduct,
         'config': {
             'description': 'Get Default',
             'plugins': {
-                'policies': ['isAuth']
+                'policies': ['isAuth', 'hasPermission']
             }
         }
     },

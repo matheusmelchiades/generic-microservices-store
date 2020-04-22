@@ -117,7 +117,6 @@ module.exports.getProducts = async (request, h) => {
 
         return h.response(response);
     } catch (err) {
-        console.log(err);
         logger.error(err.message);
 
         if (boom.isBoom(err)) return err;
