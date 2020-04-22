@@ -4,5 +4,8 @@ module.exports = {
     },
     'store': {
         'host': process.env.STORE_HOST || ''
+    },
+    'product': {
+        'host': process.env.PRODUCT_HOST || ''
     }
 };

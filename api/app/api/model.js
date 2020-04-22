@@ -1,5 +1,6 @@
 const userService = require('../services/user');
 const storeService = require('../services/store');
+const productService = require('../services/product');
 const crypto = require('../../helper/crypto');
 const boom = require('boom');
 
@@ -60,3 +61,18 @@ module.exports.addProducts = async (store, products) => {
 
     return response.data;
 };
+
+module.exports.updateProduct = async (productId, payload) => {
+
+    await productService.updateProduct(productId, payload);
+
+    return { 'message': 'Updated with success' };
+};
+
+module.exports.deleteProduct = async (productId, payload) => {
+
+    const response = await productService.deleteProduct(productId, payload);
+
+    return response.data;
+};
+

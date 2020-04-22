@@ -69,7 +69,33 @@ module.exports = [
                     'store': joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
                     'products': joi.array().required()
                 })
+            },
+            'plugins': {
+                'policies': ['isAuth']
+            }
+        }
+    },
+    {
+        'path': '/products/{producId}',
+        'method': 'PUT',
+        'handler': handler.updateProduct,
+        'config': {
+            'description': 'Get Default',
+            'plugins': {
+                'policies': ['isAuth']
+            }
+        }
+    },
+    {
+        'path': '/products/{producId}',
+        'method': 'DELETE',
+        'handler': handler.deleteProduct,
+        'config': {
+            'description': 'Get Default',
+            'plugins': {
+                'policies': ['isAuth']
             }
         }
     }
+
 ];

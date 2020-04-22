@@ -1,8 +1,10 @@
 const userMoxios = require('moxios');
 const storeMoxios = require('moxios');
+const productMoxios = require('moxios');
 const launcher = require('../../engine/launcher');
 const userService = require('../../app/services/user');
 const storeService = require('../../app/services/store');
+const productService = require('../../app/services/product');
 const helper = require('../helper');
 const mock = require('../mock');
 
@@ -16,11 +18,13 @@ describe('Api', () => {
     beforeEach(() => {
         userMoxios.install(userService.api);
         storeMoxios.install(storeService.api);
+        productMoxios.install(productService.api);
     });
 
     afterEach(() => {
         storeMoxios.uninstall(storeService.api);
         userMoxios.uninstall(userService.api);
+        productMoxios.uninstall(productService.api);
     });
 
     afterAll(async () => {
@@ -217,6 +221,80 @@ describe('Api', () => {
 
         expect(response.statusCode).toBe(200);
         expect(response.result).toHaveProperty('message', 'Add products with success');
+    });
+
+    it('It should update a product with success', async () => {
+        const user = mock.user();
+        const product = mock.product();
+        const token = await helper.getToken(server, userMoxios, user);
+
+        productMoxios.stubRequest(`/products/${product._id}`, {
+            'status': 200,
+            'responseText': product
+        });
+
+        const response = await server.inject({
+            'url': `/products/${product._id}`,
+            'method': 'PUT',
+            'headers': {
+                'authorization': token
+            },
+            'payload': {
+                'title': 'UPDATED'
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('message', 'Updated with success');
+    });
+
+    it('It should delete a product with success', async () => {
+        const user = mock.user();
+        const product = mock.product();
+        const token = await helper.getToken(server, userMoxios, user);
+
+        productMoxios.stubRequest(`/products/${product._id}`, {
+            'status': 200,
+            'responseText': {
+                'message': 'Removed with success'
+            }
+        });
+
+        const response = await server.inject({
+            'url': `/products/${product._id}`,
+            'method': 'DELETE',
+            'headers': {
+                'authorization': token
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('message', 'Removed with success');
+
+    });
+
+    it('It should report error on delete a product', async () => {
+        const user = mock.user();
+        const product = mock.product();
+        const token = await helper.getToken(server, userMoxios, user);
+
+        productMoxios.stubRequest(`/products/${product._id}`, {
+            'status': 200,
+            'responseText': {
+                'message': 'Error to delete product'
+            }
+        });
+
+        const response = await server.inject({
+            'url': `/products/${product._id}`,
+            'method': 'DELETE',
+            'headers': {
+                'authorization': token
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('message', 'Error to delete product');
     });
 });
 

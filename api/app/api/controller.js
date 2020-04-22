@@ -69,3 +69,39 @@ module.exports.addProducts = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.updateProduct = async (request, h) => {
+
+    try {
+        const { producId } = request.params;
+        const { payload } = request;
+
+        const response = await model.updateProduct(producId, payload);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        if (boom.isBoom(err)) return err;
+
+        return boom.internal();
+    }
+};
+
+module.exports.deleteProduct = async (request, h) => {
+
+    try {
+        const { producId } = request.params;
+        const { payload } = request;
+
+        const response = await model.deleteProduct(producId, payload);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        if (boom.isBoom(err)) return err;
+
+        return boom.internal();
+    }
+};
