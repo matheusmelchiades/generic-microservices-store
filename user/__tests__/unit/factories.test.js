@@ -5,14 +5,15 @@ describe('Factories', () => {
     it('It should return only properties implemented on factory create user', () => {
         const user = {
             'username': 'matheus',
-            'password': 'FuckPassword'
+            'password': 'FuckPassword',
+            'stores': []
         };
 
         const userResponse = factories.createUserResponse(user);
 
         expect(userResponse).toHaveProperty('_id');
         expect(userResponse).toHaveProperty('username', user.username);
-        expect(userResponse).toHaveProperty('password', user.password);
+        expect(userResponse).toHaveProperty('stores', user.stores);
     });
 
     it('it Should report if fields not return on factory create user', () => {

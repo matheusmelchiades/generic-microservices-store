@@ -4,8 +4,12 @@ const db = global.databases[process.env.MONGO_GLOBAL_NAME];
 const collection = 'users';
 
 module.exports.createUser = payload => {
+    const sample = {
+        'stores': [],
+        ...payload
+    };
 
-    return db.insertOne(collection, payload);
+    return db.insertOne(collection, sample);
 };
 
 module.exports.findUserByUsername = username => {
