@@ -18,3 +18,20 @@ module.exports.signup = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.signin = async (request, h) => {
+
+    try {
+        const { payload } = request;
+
+        const response = await model.signin(payload);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        if (boom.isBoom(err)) return err;
+
+        return boom.internal();
+    }
+};

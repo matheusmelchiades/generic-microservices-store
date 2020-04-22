@@ -98,4 +98,51 @@ describe('Api', () => {
         expect(response.result).toHaveProperty('error', 'Unprocessable Entity');
         expect(response.result).toHaveProperty('message', 'your data is bad and you should feel bad');
     });
+
+    it('It should signin with success', async () => {
+        const user = { 'username': 'matheus', 'password': 'qwer1234' };
+
+        moxios.stubRequest('/authenticate', {
+            'status': 200,
+            'responseText': {
+                'status': 'success',
+                'message': 'User authenticate with success',
+                'payload': {
+                    '_id': '5e9fb24a95dd02001da4dc73',
+                    'username': 'matheus'
+                }
+            }
+        });
+
+        const response = await server.inject({
+            'url': '/signin',
+            'method': 'POST',
+            'payload': user
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('token');
+    });
+
+    it('It should report error if user not exists on login', async () => {
+        const user = { 'username': 'matheus', 'password': 'qwer1234' };
+
+        moxios.stubRequest('/authenticate', {
+            'status': 200,
+            'responseText': {
+                'status': 'error',
+                'message': 'Credentials invalids'
+            }
+        });
+
+        const response = await server.inject({
+            'url': '/signin',
+            'method': 'POST',
+            'payload': user
+        });
+
+        expect(response.statusCode).toBe(401);
+        expect(response.result).toHaveProperty('error', 'Unauthorized');
+        expect(response.result).toHaveProperty('message', 'Credentials invalids');
+    });
 });

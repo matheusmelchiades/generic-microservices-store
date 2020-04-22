@@ -2,21 +2,38 @@ const userService = require('../services/user');
 const crypto = require('../../helper/crypto');
 const boom = require('boom');
 
-module.exports.signup = async user => {
+function handlesRequest(data) {
 
-    const response = await userService.createUser(user);
-
-    if (response.data.status === 'error') {
+    if (data.status === 'error') {
         return {
-            'message': response.data.message
+            'message': data.message
         };
     }
 
-    if (response.data.status === 'success') {
+    if (data.status === 'success') {
+
         return {
-            'token': crypto.encrypt(JSON.stringify(response.data.payload))
+            'token': crypto.encrypt(JSON.stringify(data.payload))
         };
     }
 
     throw boom.badData('your data is bad and you should feel bad');
+}
+
+module.exports.signup = async user => {
+
+    const response = await userService.createUser(user);
+
+    return handlesRequest(response.data);
+};
+
+module.exports.signin = async user => {
+
+    const response = await userService.authenticate(user);
+
+    if (response.data.status === 'error') {
+        throw boom.unauthorized(response.data.message);
+    }
+
+    return handlesRequest(response.data);
 };

@@ -15,3 +15,12 @@ module.exports.createUser = payload => {
         'data': payload
     });
 };
+
+module.exports.authenticate = payload => {
+
+    return api({
+        'url': '/authenticate',
+        'method': 'POST',
+        'data': payload
+    });
+};

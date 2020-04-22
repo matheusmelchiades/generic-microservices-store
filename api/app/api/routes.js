@@ -26,5 +26,19 @@ module.exports = [
                 })
             }
         }
+    },
+    {
+        'path': '/signin',
+        'method': 'POST',
+        'handler': handler.signin,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'payload': joi.object({
+                    'username': joi.string().required(),
+                    'password': joi.string().required()
+                })
+            }
+        }
     }
 ];
