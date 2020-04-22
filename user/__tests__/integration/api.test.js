@@ -132,12 +132,7 @@ describe('Main', () => {
         expect(response.result.payload).toHaveProperty('_id', userMock._id);
         expect(response.result.payload).toHaveProperty('username', userMock.username);
         expect(response.result.payload).not.toHaveProperty('password');
-        expect(response.result.payload).toHaveProperty('stores');
-
-        response.result.payload.stores.forEach(item => {
-            expect(item).toHaveProperty('store');
-            expect(item).toHaveProperty('role');
-        });
+        expect(response.result.payload).not.toHaveProperty('stores');
     });
 
     it('It should return all roles of stores by user', async () => {

@@ -20,7 +20,6 @@ module.exports.responseUserAuth = user => {
 
     return {
         '_id': user._id,
-        'username': user.username,
-        'stores': user.stores
+        'username': user.username
     };
 };
