@@ -2,8 +2,10 @@ const good = require('good');
 const inert = require('@hapi/inert');
 const vision = require('@hapi/vision');
 
+
 // PLUGINS
 const routes = require('./routes');
+const mrhorse = require('mrhorse');
 
 // OPTIONS
 const goodOptions = require('../../config/logger').good;
@@ -26,6 +28,14 @@ function getPlugins() {
         'plugin': routes,
         'options': {
             'routes': [`${process.cwd()}/app/api/**/*routes.js`]
+        }
+    });
+
+    // POLICIES
+    plugins.push({
+        'plugin': mrhorse,
+        'options': {
+            'policyDirectory': `${process.cwd()}/app/policies`
         }
     });
 

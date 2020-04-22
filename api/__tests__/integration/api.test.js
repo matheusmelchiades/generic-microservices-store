@@ -1,6 +1,9 @@
-const moxios = require('moxios');
+const userMoxios = require('moxios');
+const storeMoxios = require('moxios');
 const launcher = require('../../engine/launcher');
 const userService = require('../../app/services/user');
+const storeService = require('../../app/services/store');
+const helper = require('../helper');
 
 describe('Api', () => {
     let server;
@@ -10,11 +13,13 @@ describe('Api', () => {
     });
 
     beforeEach(() => {
-        moxios.install(userService.api);
+        userMoxios.install(userService.api);
+        storeMoxios.install(storeService.api);
     });
 
     afterEach(() => {
-        moxios.uninstall(userService.api);
+        storeMoxios.uninstall(storeService.api);
+        userMoxios.uninstall(userService.api);
     });
 
     afterAll(async () => {
@@ -38,7 +43,7 @@ describe('Api', () => {
     it('It should signup with success', async () => {
         const user = { 'username': 'matheus', 'password': 'qwer1234' };
 
-        moxios.stubRequest('/users', {
+        userMoxios.stubRequest('/users', {
             'status': 200,
             'responseText': {
                 'status': 'success',
@@ -60,7 +65,7 @@ describe('Api', () => {
         const user = { 'username': 'matheus', 'password': 'qwer1234' };
         const messageError = 'Error message';
 
-        moxios.stubRequest('/users', {
+        userMoxios.stubRequest('/users', {
             'status': 200,
             'responseText': {
                 'status': 'error',
@@ -81,7 +86,7 @@ describe('Api', () => {
     it('It should report error if user already created', async () => {
         const user = { 'username': 'matheus', 'password': 'qwer1234' };
 
-        moxios.stubRequest('/users', {
+        userMoxios.stubRequest('/users', {
             'status': 200,
             'responseText': {
                 'status': 'STATUS_FAKE'
@@ -102,7 +107,7 @@ describe('Api', () => {
     it('It should signin with success', async () => {
         const user = { 'username': 'matheus', 'password': 'qwer1234' };
 
-        moxios.stubRequest('/authenticate', {
+        userMoxios.stubRequest('/authenticate', {
             'status': 200,
             'responseText': {
                 'status': 'success',
@@ -127,7 +132,7 @@ describe('Api', () => {
     it('It should report error if user not exists on login', async () => {
         const user = { 'username': 'matheus', 'password': 'qwer1234' };
 
-        moxios.stubRequest('/authenticate', {
+        userMoxios.stubRequest('/authenticate', {
             'status': 200,
             'responseText': {
                 'status': 'error',
@@ -145,4 +150,44 @@ describe('Api', () => {
         expect(response.result).toHaveProperty('error', 'Unauthorized');
         expect(response.result).toHaveProperty('message', 'Credentials invalids');
     });
+
+    it('It should user create a store with success', async () => {
+        const user = { '_id': '5e9fb24a95dd02001da4dc73', 'username': 'matheus' };
+        const store = {
+            '_id': '5e9fe6dfabf982001dbfd947',
+            'companyName': 'Teste Stores',
+            'owner': '5e9fb24a95dd02001da4dc73'
+        };
+
+        const token = await helper.getToken(server, userMoxios, user);
+
+        storeMoxios.stubRequest('/stores', {
+            'status': 200,
+            'responseText': { ...store, 'owner': user._id }
+        });
+
+        userMoxios.stubRequest(`/users/${user._id}/stores/${store._id}`, {
+            'status': 200,
+            'responseText': {
+                'status': 'success',
+                'message': 'Associate owner with success'
+            }
+        });
+
+        const response = await server.inject({
+            'url': '/stores',
+            'method': 'POST',
+            'headers': {
+                'authorization': token
+            },
+            'payload': {
+                'companyName': store.companyName,
+                'owner': store.owner
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('message', 'Created store with success');
+    });
 });
+

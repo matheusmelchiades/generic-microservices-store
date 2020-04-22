@@ -24,3 +24,12 @@ module.exports.authenticate = payload => {
         'data': payload
     });
 };
+
+module.exports.createStore = (userID, storeId) => {
+
+    return api({
+        'url': `/users/${userID}/stores/${storeId}`,
+        'method': 'POST'
+    });
+};
+

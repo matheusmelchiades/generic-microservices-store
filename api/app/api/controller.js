@@ -35,3 +35,20 @@ module.exports.signin = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.createStore = async (request, h) => {
+
+    try {
+        const { payload, user } = request;
+
+        const response = await model.createStore(user, payload);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        if (boom.isBoom(err)) return err;
+
+        return boom.internal();
+    }
+};

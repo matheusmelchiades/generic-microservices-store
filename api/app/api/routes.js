@@ -40,5 +40,22 @@ module.exports = [
                 })
             }
         }
+    },
+    {
+        'path': '/stores',
+        'method': 'POST',
+        'handler': handler.createStore,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'payload': joi.object({
+                    'companyName': joi.string().required(),
+                    'owner': joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+                })
+            },
+            'plugins': {
+                'policies': ['isAuth']
+            }
+        }
     }
 ];

@@ -1,4 +1,5 @@
 const userService = require('../services/user');
+const storeService = require('../services/store');
 const crypto = require('../../helper/crypto');
 const boom = require('boom');
 
@@ -36,4 +37,20 @@ module.exports.signin = async user => {
     }
 
     return handlesRequest(response.data);
+};
+
+module.exports.createStore = async (user, payload) => {
+    const storeResponse = await storeService.createStore(payload);
+
+    if (storeResponse && storeResponse.data._id) {
+
+        const userResponse = await userService.createStore(user._id, storeResponse.data._id);
+
+        if (userResponse.data.status === 'success') {
+
+            return { 'message': 'Created store with success' };
+        }
+    }
+
+    throw boom.badData('Error on create store');
 };

@@ -4,15 +4,19 @@ services:
   api:
     container_name: api
     build: ./api
+    restart: always
     ports:
       - "5000:5000"
     depends_on:
       - product
+      - user
+      - store
 
   # PRODUCT SERVICE
   product:
     container_name: product
     build: ./product
+    restart: always
     ports:
       - "5001:5000"
     depends_on:
@@ -35,6 +39,7 @@ services:
   store:
     container_name: store
     build: ./store
+    restart: always
     ports:
       - "5002:5000"
     depends_on:
@@ -52,15 +57,17 @@ services:
     logging:
       driver: none
 
+
   # USER SERVICE
   user:
     container_name: user
     build: ./user
+    restart: always
     ports:
       - "5003:5000"
     depends_on:
       - user_db
-
+      
   user_db:
     image: mongo
     restart: always
