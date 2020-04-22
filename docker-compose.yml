@@ -57,7 +57,6 @@ services:
     logging:
       driver: none
 
-
   # USER SERVICE
   user:
     container_name: user
@@ -67,7 +66,7 @@ services:
       - "5003:5000"
     depends_on:
       - user_db
-      
+
   user_db:
     image: mongo
     restart: always
@@ -80,18 +79,18 @@ services:
     logging:
       driver: none
 
-  # # PROXY
-  # nginx:
-  #   container_name: nginx
-  #   image: nginx:latest
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/conf.d/default.conf
-  #   logging:
-  #     driver: none
-  #   depends_on:
-  #     - api
-  #     - product
-  #     - store
-  #     - user
+  # PROXY
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    logging:
+      driver: none
+    depends_on:
+      - api
+      - product
+      - store
+      - user
