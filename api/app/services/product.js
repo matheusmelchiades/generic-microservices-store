@@ -16,11 +16,19 @@ module.exports.updateProduct = (productId, payload) => {
     });
 };
 
-module.exports.deleteProduct = (productId, payload) => {
+module.exports.deleteProduct = productId => {
 
     return api({
         'url': `/products/${productId}`,
-        'method': 'DELETE',
-        'data': payload
+        'method': 'DELETE'
+    });
+};
+
+module.exports.getProducts = (storeid, query) => {
+
+    return api({
+        'url': `/products/stores/${storeid}`,
+        'method': 'GET',
+        'params': query
     });
 };

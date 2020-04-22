@@ -69,9 +69,17 @@ module.exports.updateProduct = async (productId, payload) => {
     return { 'message': 'Updated with success' };
 };
 
-module.exports.deleteProduct = async (productId, payload) => {
+module.exports.deleteProduct = async productId => {
 
-    const response = await productService.deleteProduct(productId, payload);
+    const response = await productService.deleteProduct(productId);
+
+    return response.data;
+};
+
+module.exports.getProductsAvailable = async (storeId, query) => {
+    const response = await productService.getProducts(storeId, {
+        ...query, 'filter': 'available'
+    });
 
     return response.data;
 };

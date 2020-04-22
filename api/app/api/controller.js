@@ -92,9 +92,26 @@ module.exports.deleteProduct = async (request, h) => {
 
     try {
         const { producId } = request.params;
-        const { payload } = request;
 
-        const response = await model.deleteProduct(producId, payload);
+        const response = await model.deleteProduct(producId);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        if (boom.isBoom(err)) return err;
+
+        return boom.internal();
+    }
+};
+
+module.exports.getProductsAvailable = async (request, h) => {
+
+    try {
+        const { store } = request.params;
+        const { query } = request;
+
+        const response = await model.getProductsAvailable(store, query);
 
         return h.response(response);
     } catch (err) {

@@ -296,5 +296,34 @@ describe('Api', () => {
         expect(response.statusCode).toBe(200);
         expect(response.result).toHaveProperty('message', 'Error to delete product');
     });
+
+    it('It should return all products avaible', async () => {
+        const user = mock.user();
+        const store = mock.store();
+        const products = mock.products(5, { store });
+        const token = await helper.getToken(server, userMoxios, user);
+        const responseMock = {
+            'count': 20,
+            'rows': products.slice(0, 5)
+        };
+
+        productMoxios.stubRequest(`/products/stores/${store._id}?page=1&limit=5&filter=available`, {
+            'status': 200,
+            'responseText': responseMock
+        });
+
+        const response = await server.inject({
+            'url': `/products/stores/${store._id}/available?page=1&limit=5`,
+            'method': 'GET',
+            'headers': {
+                'authorization': token
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('count', 20);
+        expect(response.result).toHaveProperty('rows');
+        expect(response.result.rows.length).toBe(5);
+    });
 });
 

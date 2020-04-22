@@ -96,6 +96,16 @@ module.exports = [
                 'policies': ['isAuth']
             }
         }
+    },
+    {
+        'path': '/products/stores/{store}/available',
+        'method': 'GET',
+        'handler': handler.getProductsAvailable,
+        'config': {
+            'description': 'Get Default',
+            'plugins': {
+                'policies': ['isAuth']
+            }
+        }
     }
-
 ];
