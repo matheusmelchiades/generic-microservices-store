@@ -25,7 +25,7 @@ module.exports.createStore = async (userId, storeId) => {
     if (userDb) {
         if (userDb.stores) {
             const hasStore = userDb.stores.find(item => {
-                return storeId === item.store;
+                return item.store.equals(storeId);
             });
 
             if (hasStore) {
