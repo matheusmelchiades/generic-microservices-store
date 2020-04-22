@@ -53,3 +53,21 @@ module.exports.authenticate = async ({ username, password }) => {
 
     return factory.response('error', 'Credentials invalids');
 };
+
+module.exports.getRoles = async user => {
+    const userDb = await dao.findUserById(user);
+
+    if (userDb && userDb.stores.length) {
+
+        const payload = userDb.stores.reduce((prev, item) => {
+
+            prev[item.store] = item.role;
+
+            return prev;
+        }, {});
+
+        return factory.response('success', 'Get roles with success', payload);
+    }
+
+    return factory.response('error', 'error to get roles!');
+};

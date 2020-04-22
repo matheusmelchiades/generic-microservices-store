@@ -54,5 +54,13 @@ module.exports = [
                 })
             }
         }
+    },
+    {
+        'path': '/users/{user}/roles',
+        'method': 'GET',
+        'handler': handler.getRoles,
+        'config': {
+            'description': 'Get Default'
+        }
     }
 ];

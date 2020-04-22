@@ -48,3 +48,19 @@ module.exports.authenticate = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.getRoles = async (request, h) => {
+
+    try {
+        const { user } = request.params;
+
+        const response = await model.getRoles(user);
+
+        return h.response(response);
+    } catch (err) {
+        console.log(err);
+        logger.error(err.message);
+
+        return boom.internal();
+    }
+};

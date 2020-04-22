@@ -139,4 +139,21 @@ describe('Main', () => {
             expect(item).toHaveProperty('role');
         });
     });
+
+    it('It should return all roles of stores by user', async () => {
+        const storeId = factory.db.ObjectId();
+        const user = await factory.create({
+            'stores': [{ 'store': storeId, 'role': 'owner' }]
+        });
+
+        const response = await server.inject({
+            'url': `/users/${user._id}/roles`,
+            'method': 'GET'
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('status', 'success');
+        expect(response.result).toHaveProperty('message', 'Get roles with success');
+        expect(response.result.payload).toHaveProperty(storeId.toString(), 'owner');
+    });
 });

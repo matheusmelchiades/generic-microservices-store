@@ -6,4 +6,4 @@ WORKDIR /usr/service
 
 RUN yarn
 
-CMD yarn start
+CMD yarn start --production
