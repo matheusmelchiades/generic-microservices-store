@@ -13,7 +13,8 @@ describe('Factories', () => {
 
         expect(userResponse).toHaveProperty('_id');
         expect(userResponse).toHaveProperty('username', user.username);
-        expect(userResponse).toHaveProperty('stores', user.stores);
+        expect(userResponse).not.toHaveProperty('stores');
+        expect(userResponse).not.toHaveProperty('password');
     });
 
     it('it Should report if fields not return on factory create user', () => {

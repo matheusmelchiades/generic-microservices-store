@@ -52,7 +52,7 @@ describe('Main', () => {
         expect(response.result).toHaveProperty('message', 'User created with success');
         expect(response.result.payload).toHaveProperty('_id');
         expect(response.result.payload).toHaveProperty('username', user.username);
-        expect(response.result.payload).toHaveProperty('stores');
+        expect(response.result.payload).not.toHaveProperty('stores');
     });
 
     it('It should report error if username already in use', async () => {
