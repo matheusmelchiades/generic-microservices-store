@@ -9,6 +9,14 @@ module.exports.insertProduct = payload => {
     return db.insertOne(collection, payload);
 };
 
+module.exports.getProductById = id => {
+    const query = {
+        '_id': db.ObjectId(id)
+    };
+
+    return db.findOne(collection, query);
+};
+
 module.exports.getProductsByStore = ({ store, filter, pagination }) => {
     const query = {
         'store': store,

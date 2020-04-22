@@ -89,5 +89,18 @@ module.exports = [
                 })
             }
         }
+    },
+    {
+        'path': '/products/{product}',
+        'method': 'GET',
+        'handler': handler.getProductById,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'params': joi.object({
+                    'product': joi.string().regex(/^[0-9a-fA-F]{24}$/)
+                })
+            }
+        }
     }
 ];

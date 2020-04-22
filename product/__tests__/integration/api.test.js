@@ -13,6 +13,10 @@ describe('Api', () => {
         await factory.launch();
     });
 
+    afterEach(async () => {
+        await factory.destroy();
+    });
+
     afterAll(async () => {
         await server.stop();
     });
@@ -139,7 +143,7 @@ describe('Api', () => {
         const products = await factory.createMany(5, {
             'store': storeId,
             'quantity': 3,
-            'sold': 3
+            'sold': 2
         });
 
         const response = await server.inject({
@@ -153,7 +157,19 @@ describe('Api', () => {
         expect(response.result.rows.length).toBe(pagination.limit);
 
         response.result.rows.forEach(product => {
-            expect(product.quantity).toEqual(product.sold);
+            expect(product.sold).toBeLessThan(product.quantity);
         });
+    });
+
+    it('It should return a product by id', async () => {
+        const products = await factory.createMany(5);
+
+        const response = await server.inject({
+            'url': `/products/${products[1]._id}`,
+            'method': 'GET'
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toHaveProperty('_id', products[1]._id);
     });
 });

@@ -1,5 +1,6 @@
 const dao = require('./dao');
 const factory = require('./factories');
+const { ObjectId } = global.databases[process.env.MONGO_GLOBAL_NAME];
 
 module.exports.createUser = async user => {
 
@@ -25,7 +26,7 @@ module.exports.createStore = async (userId, storeId) => {
     if (userDb) {
         if (userDb.stores) {
             const hasStore = userDb.stores.find(item => {
-                return item.store.equals(storeId);
+                return ObjectId(item.store).equals(storeId);
             });
 
             if (hasStore) {

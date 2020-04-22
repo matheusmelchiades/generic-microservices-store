@@ -67,3 +67,19 @@ module.exports.deleteProduct = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.getProductById = async (request, h) => {
+
+    try {
+        const { product } = request.params;
+
+        const response = await model.getProductById(product);
+
+        return h.response(response);
+    } catch (err) {
+        logger.error(err.message);
+
+        return boom.internal();
+    }
+};
+

@@ -32,3 +32,11 @@ module.exports.deleteProduct = async product => {
 
     return { 'message': 'Removed with success' };
 };
+
+module.exports.getProductById = async id => {
+
+    const product = await dao.getProductById(id);
+
+    return product || {};
+};
+
