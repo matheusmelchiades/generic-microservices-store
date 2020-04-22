@@ -32,3 +32,19 @@ module.exports.createStore = async (request, h) => {
         return boom.internal();
     }
 };
+
+module.exports.authenticate = async (request, h) => {
+
+    try {
+        const { payload } = request;
+
+        const response = await model.authenticate(payload);
+
+        return h.response(response);
+    } catch (err) {
+        console.log(err);
+        logger.error(err.message);
+
+        return boom.internal();
+    }
+};

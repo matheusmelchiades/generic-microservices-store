@@ -8,6 +8,12 @@ module.exports.createUser = payload => {
     return db.insertOne(collection, payload);
 };
 
+module.exports.findUserByUsername = username => {
+    const query = { 'username': username };
+
+    return db.findOne(collection, query);
+};
+
 module.exports.findUserById = id => {
     const query = {
         '_id': db.ObjectId(id)

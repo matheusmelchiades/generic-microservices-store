@@ -1,15 +1,12 @@
-const Factory = require('../factory/index');
 const factories = require('../../app/api/factories');
 
 describe('Factories', () => {
-    let factory;
-
-    beforeAll(() => {
-        factory = new Factory('user');
-    });
 
     it('It should return only properties implemented on factory create user', () => {
-        const user = factory.build();
+        const user = {
+            'username': 'matheus',
+            'password': 'FuckPassword'
+        };
 
         const userResponse = factories.createUserResponse(user);
 
@@ -19,10 +16,26 @@ describe('Factories', () => {
     });
 
     it('it Should report if fields not return on factory create user', () => {
-        const user = { ...factory.build(), 'errorField': '' };
+        const user = {
+            'username': 'matheus',
+            'password': 'FuckPassword',
+            'errorField': ''
+        };
 
         const userResponse = factories.createUserResponse(user);
 
         expect(userResponse).not.toHaveProperty('errorField');
+    });
+
+    it('it should validate factory response with field and values valid', () => {
+        const fakeResponse = {
+            'status': 'FAKE',
+            'message': 'FAKE'
+        };
+
+        const response = factories.response(fakeResponse.status, fakeResponse.message);
+
+        expect(response).toHaveProperty('status', fakeResponse.status);
+        expect(response).toHaveProperty('message', fakeResponse.message);
     });
 });

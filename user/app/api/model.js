@@ -3,9 +3,19 @@ const factory = require('./factories');
 
 module.exports.createUser = async user => {
 
-    const userDb = await dao.createUser(user);
+    const hasUser = await dao.findUserByUsername(user.username);
 
-    return factory.createUserResponse(userDb);
+    if (!hasUser) {
+        const userDb = await dao.createUser(user);
+
+        return {
+            'status': 'success',
+            'message': 'User created with success',
+            'payload': factory.createUserResponse(userDb)
+        };
+    }
+
+    return factory.response('error', 'Username already in use');
 };
 
 module.exports.createStore = async (userId, storeId) => {
@@ -13,23 +23,32 @@ module.exports.createStore = async (userId, storeId) => {
     const userDb = await dao.findUserById(userId);
 
     if (userDb) {
-
         if (userDb.stores) {
-            const hasStore = userDb.find(item => {
+            const hasStore = userDb.stores.find(item => {
                 return storeId === item.store;
             });
 
             if (hasStore) {
 
-                return {
-                    'status': 'error',
-                    'message': 'You already created this store'
-                };
+                return factory.response('error', 'You already created this store');
             }
         }
 
         await dao.addStore(userId, { storeId, 'role': 'owner' });
     }
 
-    return { 'status': 'success', 'message': 'Associate owner with success' };
+    return factory.response('success', 'Associate owner with success');
+};
+
+module.exports.authenticate = async ({ username, password }) => {
+
+    const userDb = await dao.findUserByUsername(username);
+
+    if (userDb && userDb.password === password) {
+        const userResponse = factory.responseUserAuth(userDb);
+
+        return factory.response('success', 'User authenticate with success', userResponse);
+    }
+
+    return factory.response('error', 'Credentials invalids');
 };

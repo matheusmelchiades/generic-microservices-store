@@ -6,3 +6,22 @@ module.exports.createUserResponse = user => {
         'password': user.password
     };
 };
+
+module.exports.response = (typeStatus, content, payload = {}) => {
+
+    return {
+        'status': typeStatus,
+        'message': content,
+        'payload': payload
+    };
+};
+
+
+module.exports.responseUserAuth = user => {
+
+    return {
+        '_id': user._id,
+        'username': user.username,
+        'stores': user.stores
+    };
+};

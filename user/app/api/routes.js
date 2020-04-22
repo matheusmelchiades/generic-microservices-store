@@ -40,5 +40,19 @@ module.exports = [
                 })
             }
         }
+    },
+    {
+        'path': '/authenticate',
+        'method': 'POST',
+        'handler': handler.authenticate,
+        'config': {
+            'description': 'Get Default',
+            'validate': {
+                'payload': joi.object({
+                    'username': joi.string().required(),
+                    'password': joi.string().required()
+                })
+            }
+        }
     }
 ];
