@@ -4,7 +4,7 @@ module.exports.buildFilter = filter => {
     switch (filter) {
 
         case 'available':
-            query.$expr = { '$eq': ['$quantity', '$sold'] };
+            query.$expr = { '$lt': ['$sold', '$quantity'] };
             break;
 
         default: break;
