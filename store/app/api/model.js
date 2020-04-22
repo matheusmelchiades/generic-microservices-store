@@ -2,16 +2,22 @@ const db = global.databases[process.env.MONGO_GLOBAL_NAME];
 const dao = require('./dao');
 
 module.exports.createStore = async store => {
-    const storeDb = await dao.createStore(store);
+    let storeDb;
 
-    return storeDb || {};
+    storeDb = await dao.findStore(store, { 'catalog': false });
+
+    if (!storeDb) {
+        storeDb = await dao.createStore(store);
+    }
+
+    return storeDb;
 };
 
 module.exports.addProducts = async (storeId, products) => {
 
     const storeDb = await dao.getStoreById(storeId);
 
-    if (storeDb && storeDb.catalog.status === 'pending') {
+    if (storeDb && storeDb.catalog && storeDb.catalog.status === 'pending') {
         const { catalog } = storeDb;
 
         if (catalog.products && catalog.products.length) {

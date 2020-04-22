@@ -11,8 +11,20 @@ function setObjectId(item) {
 }
 
 module.exports.createStore = payload => {
+    const sample = {
+        ...payload,
+        'catalog': {
+            'status': 'pending',
+            'products': []
+        }
+    };
 
-    return db.insertOne(collection, payload);
+    return db.insertOne(collection, sample);
+};
+
+module.exports.findStore = (query, project) => {
+
+    return db.findOne(collection, query, project);
 };
 
 module.exports.getStoreById = id => {
