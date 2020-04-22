@@ -5,7 +5,7 @@
   "author": "matheusmelchiades <matheusmacielmelchiades@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit",
     "prestart": "yarn",
     "start": "node server.js",
     "dev": "NODE_ENV=development nodemon --inspect=localhost:9229 server.js",
@@ -20,6 +20,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-jest": "^23.8.2",
     "jest": "^25.3.0",
+    "moxios": "^0.4.0",
     "nodemon": "^2.0.2"
   },
   "dependencies": {
@@ -27,9 +28,11 @@
     "@hapi/inert": "^6.0.1",
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.0",
+    "axios": "^0.19.2",
     "boom": "^7.3.0",
     "bunyan": "^1.8.12",
     "chalk": "^3.0.0",
+    "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
     "good": "^8.1.2",
     "good-console": "^8.0.0",
